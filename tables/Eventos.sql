@@ -6,6 +6,7 @@ CREATE TABLE Eventos
 	IdEvento             INTEGER AUTO_INCREMENT,
 	Fecha                DATE NOT NULL,
 	Descripcion          VARCHAR(100) NOT NULL,
+	Nombre 		         VARCHAR(80) NOT NULL,
 	Cupo                 INTEGER NOT NULL,
 	IdConcepto           INTEGER NOT NULL,
 	IdIntegrante         INTEGER NULL,
