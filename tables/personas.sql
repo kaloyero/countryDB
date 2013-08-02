@@ -8,6 +8,7 @@ CREATE TABLE Personas
 	FechaNacimiento      DATE NULL,
 	Sexo                 VARCHAR(1) NULL,
 	NroDocumento         VARCHAR(10) NULL,
+	Tipo				 VARCHAR(1) NULL,
 	DireccionEmail       VARCHAR(50) NULL,
 	IdPersona            INTEGER AUTO_INCREMENT,
 	IdTipoDocumento      INTEGER NULL,
