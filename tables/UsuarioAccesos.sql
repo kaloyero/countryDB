@@ -3,8 +3,9 @@ DROP TABLE IF EXISTS `UsuarioAccesos`;
 
 CREATE TABLE UsuarioAccesos
 (
-	IdUsuario     INTEGER NOT NULL,
-	IdAcceso     INTEGER NOT NULL,
+	Id				INTEGER AUTO_INCREMENT,
+	IdUsuario     	INTEGER NOT NULL,
+	IdAcceso     	INTEGER NOT NULL,
 	
-	PRIMARY KEY (IdUsuario,IdAcceso)
+	PRIMARY KEY (Id)
 ) AUTO_INCREMENT = 1;

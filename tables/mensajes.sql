@@ -10,7 +10,9 @@ CREATE TABLE Mensajes
 	Resolucion           VARCHAR(50) NOT NULL,
 	Estado               VARCHAR(1) NOT NULL,
 	IdMensajeCategoria   INTEGER NULL,
-	IdIntegrante         INTEGER NULL,
+	IdIntegrante         int(11) not NULL,	
+	IdEmpleado         	 int(11) NULL,
+	Envio				 VARCHAR(1) NOT NULL,--Este campo dice quien envio el mensaje el administrador o el usuario
 	TipoMensaje          VARCHAR(1) NOT NULL,
 	PRIMARY KEY (IdMensaje),
 	FOREIGN KEY R_102 (IdMensajeCategoria) REFERENCES MensajeCategorias (IdMensajeCategoria),

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS `MensajeDetalles`;
+
 CREATE TABLE MensajeDetalles
 (
 	IdMensajeDetalle     INTEGER AUTO_INCREMENT,
@@ -5,6 +7,7 @@ CREATE TABLE MensajeDetalles
 	IdMensaje            INTEGER NULL,
 	Fecha                DATE NOT NULL,
 	ModoMensaje          VARCHAR(1) NOT NULL,
+	IdPersona         INTEGER NOT NULL,	
 	PRIMARY KEY (IdMensajeDetalle),
 	FOREIGN KEY R_101 (IdMensaje) REFERENCES Mensajes (IdMensaje)
 ) AUTO_INCREMENT = 1;
