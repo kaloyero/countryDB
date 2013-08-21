@@ -1,6 +1,38 @@
 CREATE DATABASE  IF NOT EXISTS `country` 
 USE `country`;
 
+DROP TABLE IF EXISTS `Accesos`;
+
+
+CREATE TABLE Accesos
+(
+	IDAcceso            	INTEGER unsigned NOT NULL AUTO_INCREMENT,
+	NombreAcceso			VARCHAR(50) NULL,
+	IdAccesoGrupo			INTEGER NOT NULL,
+	Tag						VARCHAR(50) NULL,
+	Descripcion				VARCHAR(120) NULL,
+	Estado					VARCHAR(20) NULL,
+
+	PRIMARY KEY (IDAcceso),
+	FOREIGN KEY FK_AccesosGrupos_Accesos (IdAccesoGrupo) REFERENCES Localidades (IdAccesoGrupo)
+
+);
+
+DROP TABLE IF EXISTS `AccesosGrupos`;
+
+
+CREATE TABLE AccesosGrupos
+(
+	IdAccesoGrupo			INTEGER unsigned NOT NULL AUTO_INCREMENT,
+	NombreGrupo			VARCHAR(50) NULL,
+	Tag						VARCHAR(50) NULL,
+	Descripcion				VARCHAR(120) NULL,
+	Estado					VARCHAR(20) NULL,
+
+	PRIMARY KEY (IdAccesoGrupo)
+
+);
+
 DROP TABLE IF EXISTS `actividadasignaciones`;
 
 
@@ -199,6 +231,31 @@ CREATE TABLE Direcciones
 	FOREIGN KEY FK_Localidades_Direcciones (IdLocalidad) REFERENCES Localidades (IdLocalidad)
 ) AUTO_INCREMENT = 1;
 
+DROP TABLE IF EXISTS `empleados`;
+
+CREATE TABLE `empleados` (
+  `IdEmpleado` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `Puesto` varchar(30) NOT NULL,
+  `Legajo` varchar(20) NOT NULL,
+  `fechaIngreso` DATE NOT NULL,
+  `estado` varchar(20) NOT NULL,
+  `IdEmpleadoCategoria` int(11) NOT NULL,
+  `IdUsuario` int(11) NOT NULL,
+  `IdPersona` int(11) NOT NULL,
+  PRIMARY KEY (`IdEmpleado`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `EmpleadoCategorias`;
+
+
+CREATE TABLE EmpleadoCategorias
+(
+	IdCategoria     INTEGER AUTO_INCREMENT,
+	Nombre          VARCHAR(50) NOT NULL,
+	
+	PRIMARY KEY (IdCategoria)
+) AUTO_INCREMENT = 1;
+
 DROP TABLE IF EXISTS `emprendimientos`;
 
 CREATE TABLE Emprendimientos
@@ -231,6 +288,7 @@ CREATE TABLE Eventos
 	IdEvento             INTEGER AUTO_INCREMENT,
 	Fecha                DATE NOT NULL,
 	Descripcion          VARCHAR(100) NOT NULL,
+	Nombre 		         VARCHAR(80) NOT NULL,
 	Cupo                 INTEGER NOT NULL,
 	IdConcepto           INTEGER NOT NULL,
 	IdIntegrante         INTEGER NULL,
@@ -279,6 +337,7 @@ CREATE TABLE Instructores
 	FechaIni             DATE NOT NULL,
 	FechaFin             DATE NULL,
 	IdPersona            INTEGER NOT NULL,
+	estado  		varchar(1) NOT NULL,
 	PRIMARY KEY (IdInstructor),
 	FOREIGN KEY FK_Personas_Instructores (IdPersona) REFERENCES Personas (IdPersona)
 ) AUTO_INCREMENT = 1;
@@ -303,10 +362,12 @@ DROP TABLE IF EXISTS `integrantes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `integrantes` (
-  `IdIntegrante` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Tipo` varchar(2) NOT NULL,
-  `IdPersona` int(11) NOT NULL,
-  `IdUnidad` int(11) NOT NULL,
+  `IdIntegrante` 	int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `Tipo` 			varchar(2) NOT NULL,
+  `IdPersona` 		int(11) NOT NULL,
+  `IdUnidad` 		int(11) NOT NULL,
+  `estado`  		varchar(1) NOT NULL,
+  `IdUsuario`  		int(11) NOT NULL,
   PRIMARY KEY (`IdIntegrante`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
@@ -477,6 +538,8 @@ CREATE UNIQUE INDEX XAK1Integrantes ON Integrantes
 );
 
 
+DROP TABLE IF EXISTS `MensajeDetalles`;
+
 CREATE TABLE MensajeDetalles
 (
 	IdMensajeDetalle     INTEGER AUTO_INCREMENT,
@@ -484,6 +547,7 @@ CREATE TABLE MensajeDetalles
 	IdMensaje            INTEGER NULL,
 	Fecha                DATE NOT NULL,
 	ModoMensaje          VARCHAR(1) NOT NULL,
+	IdPersona         INTEGER NOT NULL,	
 	PRIMARY KEY (IdMensajeDetalle),
 	FOREIGN KEY R_101 (IdMensaje) REFERENCES Mensajes (IdMensaje)
 ) AUTO_INCREMENT = 1;
@@ -500,7 +564,9 @@ CREATE TABLE Mensajes
 	Resolucion           VARCHAR(50) NOT NULL,
 	Estado               VARCHAR(1) NOT NULL,
 	IdMensajeCategoria   INTEGER NULL,
-	IdIntegrante         INTEGER NULL,
+	IdIntegrante         int(11) not NULL,	
+	IdEmpleado         	 int(11) NULL,
+	Envio				 VARCHAR(1) NOT NULL,--Este campo dice quien envio el mensaje el administrador o el usuario
 	TipoMensaje          VARCHAR(1) NOT NULL,
 	PRIMARY KEY (IdMensaje),
 	FOREIGN KEY R_102 (IdMensajeCategoria) REFERENCES MensajeCategorias (IdMensajeCategoria),
@@ -632,6 +698,7 @@ CREATE TABLE Personas
 	FechaNacimiento      DATE NULL,
 	Sexo                 VARCHAR(1) NULL,
 	NroDocumento         VARCHAR(10) NULL,
+	Tipo				 VARCHAR(1) NULL,
 	DireccionEmail       VARCHAR(50) NULL,
 	IdPersona            INTEGER AUTO_INCREMENT,
 	IdTipoDocumento      INTEGER NULL,
@@ -922,24 +989,33 @@ CREATE UNIQUE INDEX XAK1Unidades ON Unidades
 	Codigo
 );
 
+DROP TABLE IF EXISTS `UsuarioAccesos`;
+
+
+CREATE TABLE UsuarioAccesos
+(
+	Id				INTEGER AUTO_INCREMENT,
+	IdUsuario     	INTEGER NOT NULL,
+	IdAcceso     	INTEGER NOT NULL,
+	
+	PRIMARY KEY (Id)
+) AUTO_INCREMENT = 1;
+
 DROP TABLE IF EXISTS `Usuarios`;
 
 
 CREATE TABLE Usuarios
 (
-	IDUsuario            INTEGER NOT NULL,
-	Descripcion          VARCHAR(50) NULL,
-	ClaveAccesoEncriptada VARCHAR(100) NOT NULL,
-	ActivoDesde          DATE NOT NULL,
-	ActivoHasta          DATE NULL,
-	Nombre               VARCHAR(20) NULL,
-	DireccionEmail       VARCHAR(20) NULL,
-	IdIntegrante         INTEGER NOT NULL,
-	PRIMARY KEY (IDUsuario),
-	FOREIGN KEY FX_Integrantes_Usuarios (IdIntegrante) REFERENCES Integrantes (IdIntegrante)
+	IdUsuario            	int(11) unsigned NOT NULL AUTO_INCREMENT,
+	Descripcion          	VARCHAR(50) NULL,
+	ClaveAccesoEncriptada 	VARCHAR(100) NOT NULL,
+	ActivoDesde          	DATE NOT NULL,
+	ActivoHasta          	DATE NULL,
+	NombreUsuario           VARCHAR(20) NULL,
+	ResetPass				VARCHAR(1) not NULL,
+	Estado					VARCHAR(10) not NULL,
+	PRIMARY KEY (IDUsuario)
 );
-
-
 
 CREATE UNIQUE INDEX XAK1Usuarios ON Usuarios
 (

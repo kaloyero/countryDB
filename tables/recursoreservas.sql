@@ -10,9 +10,9 @@ CREATE TABLE RecursoReservas
 	HoraIni              INTEGER NOT NULL,
 	Duracion             INTEGER NOT NULL,
 	IdEvento             INTEGER NOT NULL,
-	IdIntegrante         INTEGER NOT NULL,
+	IdPersona         INTEGER NOT NULL,
 	PRIMARY KEY (IdReserva),
 	FOREIGN KEY FK_Recursos_RecursoReservas (IdRecurso) REFERENCES Recursos (IdRecurso),
 	FOREIGN KEY FX_Eventos_RecursosReservas (IdEvento) REFERENCES Eventos (IdEvento),
-	FOREIGN KEY FX_Integrantes_RecursoReservas (IdIntegrante) REFERENCES Integrantes (IdIntegrante)
+	FOREIGN KEY FX_Persona_RecursoReservas (IdPersona) REFERENCES Personas (IdPersona)
 ) AUTO_INCREMENT = 1;
